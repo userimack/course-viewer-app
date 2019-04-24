@@ -13,7 +13,7 @@ import PageNotFoundError from './components/404';
 
 import store from './store';
 
-class Course extends Component {
+class CourseApp extends Component {
   render() {
     return (
 			<Provider store={store}>
@@ -34,4 +34,4 @@ class Course extends Component {
   }
 }
 
-export default Course;
+export default CourseApp;

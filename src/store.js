@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 
-import rootReducer from './reducers/index';
+import courses from './reducers/courses';
 
 //data
 const defaultState = {
@@ -8,7 +8,7 @@ const defaultState = {
 };
 
 const store = createStore(
-	rootReducer,
+	courses,
 	defaultState,
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // To setup redux devtools
 );

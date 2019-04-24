@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function Home() {
   return (
-		<div class="jumbotron">
+		<div className="jumbotron">
 			<h1>Pluralsight Administration</h1>
 			<h5>React, Redux and React Router for ultra-responsive web apps.</h5>
 
