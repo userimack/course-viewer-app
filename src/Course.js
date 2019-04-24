@@ -1,0 +1,37 @@
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Provider } from 'react-redux';
+
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import Home from './components/Home';
+import App from './components/App';
+import Header from './components/Header';
+import About from './components/About';
+import PageNotFoundError from './components/404';
+
+import store from './store';
+
+class Course extends Component {
+  render() {
+    return (
+			<Provider store={store}>
+				<Router>
+					<div>
+						<Header/>
+
+						<Switch>
+							<Route exact path="/" component={Home} />
+							<Route path="/courses" component={App} />
+							<Route path="/about" component={About} />
+							<Route component={PageNotFoundError} />
+						</Switch>
+					</div>
+				</Router>
+			</Provider>
+    );
+  }
+}
+
+export default Course;

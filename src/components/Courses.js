@@ -3,43 +3,57 @@ import React from 'react';
 class Courses extends React.Component {
 	constructor(props){
 		super(props);
-		this.state = {courses: [], value: ''};
+		// this.state = {name: ''};
 
-		this.handleChange = this.handleChange.bind(this);
+		// this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	handleChange(event) {
-		this.setState({value: event.target.value})
-	}
+	// handleChange(event) {
+	//   const courseName = event.target.name;
+	//   if (courseName) {
+	//     this.setState({name: courseName})
+	//   }
+	// }
 
 	handleSubmit(event) {
-		this.setState({courses: [...this.state.courses, this.state.value]});
-
 		event.preventDefault();
-		this.setState({value: ''})
+
+		const courseName = this.refs.name.value;
+		if (courseName) {
+			this.props.addCourse(courseName)
+			console.info(courseName + " is added to the store")
+			// this.setState({courses: [...this.state.courses, this.state.value]});
+
+			// this.setState({value: ''})
+		}
 	}
 	render() {
+		const coursesList = this.props.courses;
+		// if (!coursesList){
+		//   coursesList = [];
+		// }
+
 		return (
 			<div>
 				<h2>Courses</h2>
 				<ul>
-					{this.state.courses.map((course, index) => <Course course={course} key={index} />)}
+					{coursesList ? coursesList.map((course, index) => <Course course={course} key={index} />) : []}
 				</ul>
 
 				<h3>Add Courses</h3>
-				<form onSubmit={this.handleSubmit}>
-					<div class="form-group col-sm-4">
-						<input class="form-control" type="text" name="course" value={this.state.value} onChange={this.handleChange}/>
+				<form onSubmit={this.handleSubmit} ref="courseForm">
+					<div className="form-group col-sm-4">
+						<input ref="name" className="form-control" type="text"/>
 					</div>
-					<div class="form-group col-sm-2">
-						<input type="submit" value="save" class="btn btn-primary mb-2"/>
+					<div className="form-group col-sm-2">
+						<input type="submit" value="save" className="btn btn-primary mb-2"/>
 					</div>
 				</form>
 			</div>
-		)
-	}
-}
+		);
+	};
+};
 
 
 class Course extends React.Component {
