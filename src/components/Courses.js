@@ -5,6 +5,8 @@ class Courses extends React.Component {
 		super(props);
 		this.state = {value: ''};
 
+		this.props.fetchCourses();
+
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -28,6 +30,8 @@ class Courses extends React.Component {
 		}
 	}
 	render() {
+		console.log("comp", this.props);
+
 		return (
 			<div>
 				<h2>Courses</h2>
@@ -52,7 +56,7 @@ class Courses extends React.Component {
 
 class Course extends React.Component {
 	render() {
-		return <li>{this.props.course}</li>
+		return <li>{this.props.course.title}</li>
 	}
 }
 

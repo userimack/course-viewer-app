@@ -1,17 +1,24 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 
 import courses from './reducers/courses';
+
+import thunk from 'redux-thunk';
 
 //data
 const defaultState = {
 	courses: []
 };
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
 	courses,
 	defaultState,
-	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // To setup redux devtools
+	composeEnhancers(
+		applyMiddleware(thunk),
+	),
 );
+	
 
 
 if (module.hot) {
