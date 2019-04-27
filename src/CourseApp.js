@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Home from './components/Home';
 import App from './components/App';
+import AddCourse from './components/AddCourse';
 import Header from './components/Header';
 import About from './components/About';
 import PageNotFoundError from './components/404';
@@ -24,6 +25,7 @@ class CourseApp extends Component {
 						<Switch>
 							<Route exact path="/" component={Home} />
 							<Route path="/courses" component={App} />
+							<Route path="/course" component={AddCourse} />
 							<Route path="/about" component={About} />
 							<Route component={PageNotFoundError} />
 						</Switch>

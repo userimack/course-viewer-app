@@ -6,7 +6,8 @@ import Courses from './Courses';
 
 function mapStateToProps(state){
 	return {
-		courses: state.courses
+		courses: state.courses,
+		authors: state.authors
 	}
 }
 
