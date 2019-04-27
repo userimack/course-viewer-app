@@ -1,4 +1,4 @@
-import { handleResponse, handleError } from "./apiUtils.courseApi";
+import { handleResponse, handleError } from "./apiUtils";
 const baseUrl = "http://localhost:3001/authors/";
 
 export function getAuthors() {
