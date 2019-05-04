@@ -10,6 +10,7 @@ class Courses extends React.Component {
 
 	render() {
 		console.log("in the component", this.props);
+		const courseList = this.props.courses ? this.props.courses : [];
 
 		return (
 			<div>
@@ -26,7 +27,7 @@ class Courses extends React.Component {
 							</tr>
 						</thead>
 						<tbody>
-							{this.props.courses.map((course, index) => <Course course={course} authors={this.props.authors} key={index} />)}
+							{courseList.map((course, index) => <Course course={course} authors={this.props.authors} key={index} />)}
 						</tbody>
 					</table>
 				</div>
@@ -38,11 +39,12 @@ class Courses extends React.Component {
 
 class Course extends React.Component {
 	render() {
-		console.log("course comp", this.props.authors)
+		const authorName = this.props.authors ? this.props.authors.find(author => this.props.course.authorId === author.id).name : []
+
 		return (<tr>
 			<td>Watch</td>
-			<td><Link to="">{this.props.course.title}</Link></td>
-			<td>{this.props.authors.find(author => this.props.course.authorId === author.id).name}</td>
+			<td><Link to={`/course/${this.props.course.slug}`}>{this.props.course.title}</Link></td>
+			<td>{authorName}</td>
 			<td>{this.props.course.category}</td>
 		</tr>)
 	}

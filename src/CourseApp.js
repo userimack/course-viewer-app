@@ -25,6 +25,7 @@ class CourseApp extends Component {
 						<Switch>
 							<Route exact path="/" component={Home} />
 							<Route path="/courses" component={App} />
+							<Route path="/course/:slug" component={AddCourse} />
 							<Route path="/course" component={AddCourse} />
 							<Route path="/about" component={About} />
 							<Route component={PageNotFoundError} />

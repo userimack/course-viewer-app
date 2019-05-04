@@ -1,29 +1,31 @@
-import { getCourses } from '../api/courseApi';
+import { getCourses, saveCourse } from '../api/courseApi';
 import { getAuthors } from '../api/authorApi';
 
-export const ADD_COURSE = 'ADD_COURSE';
-export const ADD_MULTIPLE_COURSES = 'ADD_MULTIPLE_COURSES';
+export const ADD_COURSES = 'ADD_COURSES';
 export const ADD_AUTHORS = 'ADD_AUTHORS';
 
 export function addCourse(course){
-	return {
-		type: ADD_COURSE,
-		course
+	return (dispatch, getState) => {
+		console.log("Saving course");
+		saveCourse(course).then(response => {
+			dispatch(fetchCourses());
+		});
 	}
-};
+}
 
 export function fetchCourses(){
 	return (dispatch, getState) => {
 		console.log("fetching courses");
 		getCourses().then(response => {
-			dispatch(addMultipleCourses(response));
+			console.log(response);
+			dispatch(addCourses(response));
 		});
 	}
 }
 
-export function addMultipleCourses(data){
+export function addCourses(data){
 	return {
-		type: ADD_MULTIPLE_COURSES,
+		type: ADD_COURSES,
 		courses: data
 	}
 }
