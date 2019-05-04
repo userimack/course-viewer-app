@@ -1,4 +1,4 @@
-import { getCourses, saveCourse } from '../api/courseApi';
+import { getCourses, saveCourse, deleteCourse } from '../api/courseApi';
 import { getAuthors } from '../api/authorApi';
 
 export const ADD_COURSES = 'ADD_COURSES';
@@ -17,7 +17,6 @@ export function fetchCourses(){
 	return (dispatch, getState) => {
 		console.log("fetching courses");
 		getCourses().then(response => {
-			console.log(response);
 			dispatch(addCourses(response));
 		});
 	}
@@ -44,4 +43,14 @@ export function fetchAuthors(){
 			dispatch(addAuthors(response));
 		})
 	}
+}
+
+
+export function deleteRequest(courseId) {
+	return (dispatch, getState) => {
+		console.log("Deleting course with Id: ", courseId);
+		deleteCourse(courseId).then(response => {
+			dispatch(fetchCourses());
+		});
+	};
 }

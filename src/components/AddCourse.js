@@ -101,7 +101,6 @@ class AddCourse extends React.Component{
 			const authorId = this.props.authors? this.props.authors.find(author => refs.author.value === author.name).id : ""
 			const newCourse = {title: refs.title.value, authorId: authorId, category: refs.category.value}
 			if (this.state.course.slug){
-				debugger;
 				console.log("Adding id and slug")
 				newCourse.id = this.state.course.id
 				newCourse.slug = this.state.course.slug

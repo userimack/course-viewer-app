@@ -9,7 +9,6 @@ class Courses extends React.Component {
 	}
 
 	render() {
-		console.log("in the component", this.props);
 		const courseList = this.props.courses ? this.props.courses : [];
 
 		return (
@@ -27,7 +26,7 @@ class Courses extends React.Component {
 							</tr>
 						</thead>
 						<tbody>
-							{courseList.map((course, index) => <Course course={course} authors={this.props.authors} key={index} />)}
+							{courseList.map((course, index) => <Course course={course} authors={this.props.authors} key={index} deleteRequest={this.props.deleteRequest} />)}
 						</tbody>
 					</table>
 				</div>
@@ -42,10 +41,11 @@ class Course extends React.Component {
 		const authorName = this.props.authors ? this.props.authors.find(author => this.props.course.authorId === author.id).name : []
 
 		return (<tr>
-			<td>Watch</td>
+			<td><button type="button" className="btn btn-light">Watch</button></td>
 			<td><Link to={`/course/${this.props.course.slug}`}>{this.props.course.title}</Link></td>
 			<td>{authorName}</td>
 			<td>{this.props.course.category}</td>
+			<td><button type="button" className="btn btn-outline-danger" onClick={() => this.props.deleteRequest(this.props.course.id)}>Delete</button></td>
 		</tr>)
 	}
 }
