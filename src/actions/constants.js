@@ -1,0 +1,17 @@
+export const ADD_COURSES = 'ADD_COURSES';
+export const ADD_COURSE = 'ADD_COURSE';
+export const REMOVE_COURSE = "REMOVE_COURSE";
+
+export const UPDATE_COURSE = "UPDATE_COURSE";
+
+export const ADD_AUTHORS = 'ADD_AUTHORS';
+
+
+
+// Saga related Constants
+export const FETCH_COURSES = "FETCH_COURSES";
+export const FETCH_AUTHORS = "FETCH_AUTHORS";
+
+export const ADD_COURSE_REQUESTED = "ADD_COURSE_REQUESTED"
+export const REMOVE_COURSE_REQUESTED = "REMOVE_COURSE_REQUESTED"
+export const UPDATE_COURSE_REQUESTED = "UPDATE_COURSE_REQUESTED"

@@ -6,7 +6,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Home from './components/Home';
-import App from './components/App';
+import Courses from './components/Courses';
 import AddCourse from './components/AddCourse';
 import Header from './components/Header';
 import About from './components/About';
@@ -24,7 +24,7 @@ class CourseApp extends Component {
 
 						<Switch>
 							<Route exact path="/" component={Home} />
-							<Route path="/courses" component={App} />
+							<Route path="/courses" component={Courses} />
 							<Route path="/course/:slug" component={AddCourse} />
 							<Route path="/course" component={AddCourse} />
 							<Route path="/about" component={About} />

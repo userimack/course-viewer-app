@@ -1,11 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actionCreators from '../actions';
+
 class Courses extends React.Component {
 	constructor(props){
 		super(props);
 
-		this.props.fetchAuthors();
 		this.props.fetchCourses();
+		this.props.fetchAuthors();
 	}
 
 	render() {
@@ -26,7 +30,7 @@ class Courses extends React.Component {
 							</tr>
 						</thead>
 						<tbody>
-							{courseList.map((course, index) => <Course course={course} authors={this.props.authors} key={index} deleteRequest={this.props.deleteRequest} />)}
+							{courseList.map((course, index) => <Course course={course} authors={this.props.authors} key={index} removeCourse={this.props.removeCourse} />)}
 						</tbody>
 					</table>
 				</div>
@@ -38,16 +42,30 @@ class Courses extends React.Component {
 
 class Course extends React.Component {
 	render() {
-		const authorName = this.props.authors ? this.props.authors.find(author => this.props.course.authorId === author.id).name : []
+		const authorName = this.props.authors.length > 0 ? this.props.authors.find(author => this.props.course.authorId === author.id).name : []
 
 		return (<tr>
 			<td><button type="button" className="btn btn-light">Watch</button></td>
 			<td><Link to={`/course/${this.props.course.slug}`}>{this.props.course.title}</Link></td>
 			<td>{authorName}</td>
 			<td>{this.props.course.category}</td>
-			<td><button type="button" className="btn btn-outline-danger" onClick={() => this.props.deleteRequest(this.props.course.id)}>Delete</button></td>
+			<td><button type="button" className="btn btn-outline-danger" onClick={() => this.props.removeCourse(this.props.course.id)}>Delete</button></td>
 		</tr>)
 	}
 }
 
-export default Courses;
+function mapStateToProps(state){
+	return {
+		courses: state.courses,
+		authors: state.authors
+	}
+}
+
+function mapDispatchToProps(dispatch){
+	return bindActionCreators(actionCreators, dispatch);
+}
+
+const App = connect(mapStateToProps, mapDispatchToProps)(Courses)
+
+
+export default App;
