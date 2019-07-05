@@ -21,10 +21,11 @@ function mapDispatchToProps(dispatch){
 class AddCourse extends React.Component{
 	constructor(props){
 		super(props);
+
 		const { match: { params: { slug }} } = this.props;;
 		this.state = {
 			course: {title: '',
-					 author: 'Select Author',
+					 authorId: -1,
 					 category: '',
 					 id: null,
 					 slug
@@ -36,12 +37,36 @@ class AddCourse extends React.Component{
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.getCourseDataForEdit = this.getCourseDataForEdit.bind(this)
+
 	}
 
 	componentDidMount(){
-		this.props.fetchCourses();
+		console.log("before", this.props)
 		this.props.fetchAuthors();
-		// this.getCourseDataForEdit();
+		this.props.fetchCourses();
+		this.getCourseDataForEdit();
+		console.log("after", this.props)
+	}
+
+	getCourseDataForEdit(){
+		console.log("~~~~~~~~", this.props.match.params.slug)
+		if (this.props.match.params.slug){
+			const course = this.props.courses.find(course => course.slug === this.props.match.params.slug);
+			debugger
+			if (course) {
+				this.setState(
+					{...this.props,
+						course: {title: course.title,
+								 authorId: course.authorId,
+								 category: course.category,
+								 id: course.id,
+								 slug: course.slug
+								}
+					}
+				);
+			}
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -56,30 +81,33 @@ class AddCourse extends React.Component{
 		// }
 	}
 
-	// static getDerivedStateFromProps(nextProps, prevState){
-	// 	console.log("Calling getDerivedStateFromProps")
-	// 	if(nextProps.authors.length !== prevState.authors.length && nextProps.courses.length !== prevState.courses.length){
-	// 		console.log("check passed")
-	// 		if (prevState.course.slug){
-	// 			console.log("hey there", prevState.course.slug)
-	// 			console.log("---------------", prevState.courses, nextProps.courses);
-	// 			console.log("prevState.slug", prevState.course.slug)
-	// 			const cs = nextProps.courses.find((course, index) => prevState.course.slug === course.slug);
-	// 			console.log("~~~", cs)
+	static getDerivedStateFromProps(nextProps, prevState){
+		console.log("Calling getDerivedStateFromProps")
+		// if (nextProps.match.params.slug) {
 
-	// 			const author = nextProps.authors.find(author => cs.authorId  === author.id)
-	// 			return {...prevState, course: {title: cs.title, author: author.name, category: cs.category, slug: cs.slug, id: cs.id}, authors: nextProps.authors, courses: nextProps.courses};
-	// 			// console.log("getCourseDataForEdit: Updated state", this.state)
+		if(nextProps.authors.length !== prevState.authors.length && nextProps.courses.length !== prevState.courses.length){
+			console.log("check passed")
+			if (prevState.course.slug){
+				console.log("hey there", prevState.course.slug)
+				console.log("---------------", prevState.courses, nextProps.courses);
+				console.log("prevState.slug", prevState.course.slug)
+				const cs = nextProps.courses.find((course, index) => prevState.course.slug === course.slug);
+				console.log("~~~", cs)
 
-	// 		}
-	// 		console.log("2 Calling getDerivedStateFromProps")
-	// 		return {...prevState, authors: nextProps.authors, courses: nextProps.courses}
-	// 	}
-	// 	else return null
-	// }
+				// const author = nextProps.authors.find(author => cs.authorId  === author.id)
+				return {...prevState, course: {title: cs.title, authorId: cs.authorId, category: cs.category, slug: cs.slug, id: cs.id}, authors: nextProps.authors, courses: nextProps.courses};
+				// console.log("getCourseDataForEdit: Updated state", this.state)
+
+			}
+			console.log("2 Calling getDerivedStateFromProps")
+			return {...prevState, authors: nextProps.authors, courses: nextProps.courses}
+		}
+		else return null
+	}
 
 
 	handleChange(event) {
+		console.log("1: ", event.target.name, event.target.value)
 		this.setState({...this.state, course: {...this.state.course, [event.target.name]: event.target.value}})
 	  }
 
@@ -87,23 +115,25 @@ class AddCourse extends React.Component{
 		event.preventDefault();
 		const course = this.state.course;
 
-		if (course.title && course.author && course.category) {
-			const authorId = this.props.authors? this.props.authors.find(author => course.author === author.name).id : ""
-			const newCourse = {title: course.title, authorId: authorId, category: course.category}
+		if (course.title && course.authorId && course.category) {
+			// const authorId = this.props.authors? this.props.authors.find(author => course.author === author.id).id : ""
+			const newCourse = {title: course.title, authorId: course.authorId, category: course.category}
 
 			if (course.slug){
 				console.log("Adding id and slug")
 				newCourse.id = course.id
 				newCourse.slug = course.slug
+				this.props.updateCourseRequested(newCourse)
 			}
-
-			this.props.addCourse(newCourse);
-			console.info(newCourse + " is added to the store")
+			else{
+				this.props.addCourseRequested(newCourse);
+				console.info(newCourse + " is added to the store")
+			}
 
 		const newState = {
 		...this.state,
 		course: {title: '',
-					author: 'Select Author',
+					authorId: -1,
 					category: '',
 					id: null,
 					slug: null
@@ -123,6 +153,9 @@ class AddCourse extends React.Component{
 			return <Redirect to='/courses' />
 		  }
 
+		  var message='You selected '+this.state.course.authorId;
+
+
 		return(
 			<div>
 				<h3>{this.state.course.slug ? 'Edit' : 'Add'} Course</h3>
@@ -133,15 +166,18 @@ class AddCourse extends React.Component{
 					</div>
 					<div className="form-group col-sm-4">
 					<label htmlFor="author">Author</label>
-						<select required name="author" className="form-control" value={this.state.course.author} onChange={this.handleChange}>
-						    <option>Select Author</option>
-							{this.props.authors.map((author, index) => <SelectOption selectOption={author.name} key={index} />)}
+						<select required name="authorId" className="form-control" value={this.state.course.authorId} onChange={this.handleChange}>
+						    <option value="-1">Select Author</option>
+							{this.props.authors.map((author, index) => <SelectOption selectOption={author.name} authorId={author.id} key={author.id}/>)}
 						</select>
 					</div>
 					<div className="form-group col-sm-4">
 					<label htmlFor="category">Category</label>
 						<input required name="category" className="form-control" type="text" value={this.state.course.category} onChange={this.handleChange}/>
 					</div>
+
+					<p>{message}</p>
+
 					<div className="form-group col-sm-2">
 						<input type="submit" value="save" className="btn btn-primary mb-2"/>
 					</div>
@@ -154,7 +190,7 @@ class AddCourse extends React.Component{
 class SelectOption extends React.Component{
 	render() {
 		return (
-			<option>{this.props.selectOption}</option>
+			<option value={this.props.authorId}>{this.props.selectOption}</option>
 		)
 	}
 };

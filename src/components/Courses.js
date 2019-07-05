@@ -7,9 +7,8 @@ import * as actionCreators from '../actions';
 class Courses extends React.Component {
 	constructor(props){
 		super(props);
-
-		this.props.fetchCourses();
 		this.props.fetchAuthors();
+		this.props.fetchCourses();
 	}
 
 	render() {
@@ -30,7 +29,7 @@ class Courses extends React.Component {
 							</tr>
 						</thead>
 						<tbody>
-							{courseList.map((course, index) => <Course course={course} authors={this.props.authors} key={index} removeCourse={this.props.removeCourse} />)}
+							{courseList.map((course, index) => <Course course={course} authors={this.props.authors} key={index} removeCourseRequested={this.props.removeCourseRequested} />)}
 						</tbody>
 					</table>
 				</div>
@@ -42,14 +41,14 @@ class Courses extends React.Component {
 
 class Course extends React.Component {
 	render() {
-		const authorName = this.props.authors.length > 0 ? this.props.authors.find(author => this.props.course.authorId === author.id).name : []
+		const authorName = this.props.authors.length > 0 ? this.props.authors.find(author => Number(this.props.course.authorId) === author.id).name : []
 
 		return (<tr>
 			<td><button type="button" className="btn btn-light">Watch</button></td>
 			<td><Link to={`/course/${this.props.course.slug}`}>{this.props.course.title}</Link></td>
 			<td>{authorName}</td>
 			<td>{this.props.course.category}</td>
-			<td><button type="button" className="btn btn-outline-danger" onClick={() => this.props.removeCourse(this.props.course.id)}>Delete</button></td>
+			<td><button type="button" className="btn btn-outline-danger" onClick={() => this.props.removeCourseRequested(this.props.course.id)}>Delete</button></td>
 		</tr>)
 	}
 }

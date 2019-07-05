@@ -11,7 +11,7 @@ export default function courses(state = [], action){
 			return [...state, action.course]
 		case REMOVE_COURSE:
 			console.log("Deleting course from the store");
-			const deletedIndex = state.findIndex(element => element.id === action.courseId)
+			const deletedIndex = state.findIndex(element => element.id === action.id)
 			if (deletedIndex === undefined || deletedIndex === -1) {
 				console.log("Error: Unable to find the index")
 				return state
